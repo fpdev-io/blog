@@ -7,3 +7,11 @@ author: fp-dev
 ---
 
 Monads are seen as a kind of structure that sounds horrible.
+
+## Monad definition in Scala
+{% highlight scala %}
+    trait Monad[F[_]] {
+        def pure[A](value: A): F[A]
+        def flatMap[A, B](value: F[A])(func: A => F[B]): F[B]
+    }
+{% endhighlight %}
