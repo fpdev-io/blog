@@ -1,0 +1,21 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@import 'tale';
+
+.header {
+    display:flex;
+  align-items:center;
+}
+.logo {
+    width: 75px;
+    display: inline-block;
+    margin: 0;
+}
+
+.site-name {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 2em;
+}
