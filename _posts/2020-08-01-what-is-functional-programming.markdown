@@ -6,10 +6,15 @@ categories: functional programming
 author: fp_dev
 ---
 
-Many developers want to learn Functional Programming these days but as it turns out it's not that easy.
+Functional Programming is getting more and more popular nowadays.  
+
+Many developers want to learn Functional Programming but as it turns out it's not that easy.
 It's easy when we try to explain someone what Functional Programming really is.  
 
-We usually say: 
+Dozens of people say that functional programming is all about immutable values, lambda functions or special languages.
+It's all true but these things above are only additions.
+
+It all comes down to saying that:
 ## `Functional Programming is a programming with functions.`
 Some time ago I was Java Developer. One day I decided that I'd like to be Scala developer. I didn't have any previous experience with this language.
 
@@ -43,8 +48,28 @@ Let's have a couple of functions:
 
 def f(x: Int): Int = x + 1
 
-def h(x: Int): Int = x + 2
+def g(x: Int): Int = x + 2
 
 def h(x: Int): Int = x + 10
 
+val x = 5
+
+val a = f(x)
+val b = g(a)
+val c = h(b)
+
+val c = h(g(f(x))) //we compose functions together
 {% endhighlight %}
+
+As you can see the code above looks just like simple equations in maths.
+
+That's why we sometimes say that FP code is like algebra.
+
+---
+Why should we care?
+
+Bacause:
+1. FP code is much easier to reason about
+2. FP code is like algebra
+3. We use immutable values
+
