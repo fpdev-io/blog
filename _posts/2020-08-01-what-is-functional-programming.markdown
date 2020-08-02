@@ -54,18 +54,37 @@ def h(x: Int): Int = x + 10
 
 val x = 5
 
-val a = f(x)
-val b = g(a)
+val a = f(x) /* we calculate a value of the first function */
+val b = g(a) /* and we pass it to the next function then */
 val c = h(b)
 
-val c = h(g(f(x))) //we compose functions together
+val d = h(g(f(x))) /* we compose functions together */
 {% endhighlight %}
 
 As you can see the code above looks just like simple equations in maths.
 
 That's why we sometimes say that FP code is like algebra.
 
----
+# Side Effects
+Suppose we have a function: 
+{% highlight scala %}
+def increment(x: Int): Int = {
+  println(s"x value: $x")
+  x + 1
+}
+{% endhighlight%}
+
+Everything is fine with that function...but it prints x value to the console.  
+This action we call a `side effect.`
+
+# Pure Functions
+
+### `A pure function is a function where its output depends only on its input value.`  
+Pure functions don't communicate with I/O devices, so println's are forbidden.
+
+
+# Referential Transparency
+
 Why should we care?
 
 Bacause:
