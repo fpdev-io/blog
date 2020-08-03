@@ -10,14 +10,17 @@ Functional Programming is getting more and more popular nowadays.
 
 Many developers want to learn Functional Programming but as it turns out it's not that easy.
 It's easy when we try to explain someone what Functional Programming really is.  
+It gets harder when it comes to practice. There are lots of new words (monads, functors, applicatives, etc.). It's
+completely new approach to programming software. Many developers struggle to understand it. 
 
-Dozens of people say that functional programming is all about immutable values, lambda functions or special languages.
-It's all true but these things above are only additions.
+Dozens of people say that functional programming is all about special syntax, lambda functions or special languages.
+It's all true but these things above are only additions. Some even say that you can do FP only with Haskell or Erlang. 
 Some time ago I was Java Developer. One day I decided that I'd like to be Scala developer. I didn't have any previous experience with this language.
 
 When I started learning it, it quickly turned out that it's not just a syntax to grab. It was the whole new world of programming with a very different approach to composing programs. It was Functional Programming.
 
-In this blogpost I'm gonna explain Functional Programming by using **Scala**. I'll explain a bit what's going on in the
+In this blogpost I'm gonna explain Functional Programming by using **Scala**. Why Scala? Because it's a very good hammer
+for it. Scala allows writing OOP code as well as FP code. It helps when switching from OOP to FP languages. I'll explain a bit what's going on in the
 code and I'll try to use very simple examples.
 
 Ok, having said that let's go back to the point.
@@ -177,6 +180,9 @@ not. The answers are at the end of the article.
   /* app 2 */
   List(println("hello"), println("hello"))
 {% endhighlight %}
+
+# How it differs from OOP?
+  
 # Summary
 In this short article I hope I explained Functional Programming a bit. I know it's just the tip of the iceberg and FP is
 very extensive and exciting programming technique. In the next blogposts I'll give you more practical information about
