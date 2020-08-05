@@ -169,8 +169,9 @@ list.map(n => n + 1)
 {% endhighlight %}
 
 # Functor Laws
-Functor originally comes from **Category Theory** and it means a mapping between categories.
-Libraries like [Cats](https://typelevel.org/cats) and its Functors implementation depend on these laws heavily.  
+Functor originally comes from **Category Theory** and it means a mapping between categories.  
+Like many things in mathematics functors have laws and libraries 
+as [Cats](https://typelevel.org/cats) or [Scalaz](https://scalaz.github.io/7) and their functors implementation depend on these laws heavily.  
 What are they?  
 ## **Identity**
 Let **`F`** be our Functor with a **`map`** method. First of all we need to define an identity function that:
@@ -209,6 +210,6 @@ val rightResult = List(1, 2, 3).map(f andThen g)
 As you can see the Functor Laws are quite simple, but you need to remember about them when defining your own Functors.
 As I mentioned before many libraries rely on them.
 
-Ok that's all for now. I hope I explained a bit about Functors. In the next blogpost we'll talk about **`Monads`**
+Ok that's all for now. I hope I explained a bit about functors. In the next blogpost we'll talk about **`Monads`**
 :smile::heart:
 
