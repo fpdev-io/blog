@@ -167,6 +167,48 @@ val list = List(1, 2, 3)
 list.map(n => n + 1)
 // list: List[Int] = List(2, 3, 4)
 {% endhighlight %}
+
+# Functor Laws
+Functor originally comes from **Category Theory** and it means a mapping between categories.
+Libraries like [Cats](https://typelevel.org/cats) and its Functors implementation depend on these laws heavily.  
+What are they?  
+## **Identity**
+Let **`F`** be our Functor with a **`map`** method. First of all we need to define an identity function that:
+{% highlight scala %}
+def identity(x: Int) = x
+{% endhighlight %}
+Then we can show that: **`F.map(identity) == F`**, right?
+
+Let's check it in Scala:
+{% highlight scala %}
+
+def identity(x: Int) = x
+
+val list = List(1, 2, 3)
+
+val result = list.map(identity)
+// result: List[Int] = List(1, 2, 3)
+{% endhighlight %}
+
+## **Associativity**
+
+Let **`F`** be our Functor with a **`map`** method.  
+We need to show that **`F.map(f).map(g) == F.map(f andThen g)`**
+As usually let's write some code:
+{% highlight scala %}
+def f(x: Int) = x + 1
+def g(x: Int) = x + 2
+
+val leftResult = List(1, 2, 3).map(f).map(g)
+// leftResult: List[Int] = List(4, 5, 6)
+
+val rightResult = List(1, 2, 3).map(f andThen g)
+// rightResult: List[Int] = List(4, 5, 6)
+{% endhighlight %}
+
+As you can see the Functor Laws are quite simple, but you need to remember about them when defining your own Functors.
+As I mentioned before many libraries depend on them.
+
 Ok that's all for now. I hope I explained a bit about Functors. In the next blogpost we'll talk about **`Monads`**
 :smile::heart:
 
