@@ -12,7 +12,7 @@ At first it can be overwhelming but I'll try to explain what's all about and how
 
 In this blogpost series we'll define our own **`Functor`**, **`Monad`** and **`Applicative`**.
 
-Let's with a Functor and make some assumptions first:
+Let's start with a Functor and make some assumptions first:
 
 1. We have three functions:
  - **`A => B`**
