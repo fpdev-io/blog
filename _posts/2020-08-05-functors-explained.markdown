@@ -207,7 +207,7 @@ val rightResult = List(1, 2, 3).map(f andThen g)
 {% endhighlight %}
 
 As you can see the Functor Laws are quite simple, but you need to remember about them when defining your own Functors.
-As I mentioned before many libraries depend on them.
+As I mentioned before many libraries rely on them.
 
 Ok that's all for now. I hope I explained a bit about Functors. In the next blogpost we'll talk about **`Monads`**
 :smile::heart:
