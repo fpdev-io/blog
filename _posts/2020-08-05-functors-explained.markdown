@@ -40,7 +40,7 @@ List(1, 2, 3).map(n => n + 1)
 Using simple transformations we could define Functor more formally as:
 
 # **`(A => B) => (F[A] => F[B])`**
-It's a function that gets a function of type **`A => B`**(which itself is a function :wink:) as parameter and returns another function of type **`F[A] => F[B]`**.
+It's a function that gets a parameter of type **`A => B`**(which itself is a function :wink:) and returns another function of type **`F[A] => F[B]`**.
 We can look at **`F[A]`** as a box that can hold a value of type **`A`**.  
 
 For instance:
