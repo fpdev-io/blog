@@ -10,9 +10,9 @@ When you start writing your code in a more functional way you finally learn abou
 **`Applicatives`**.
 At first it can be overwhelming but I'll try to explain what's all about and how to better understand these constructs.
 
-In this blogpost we'll define our own **`Functor`**, **`Monad`** and **`Applicative`**.
+In this blogpost series we'll define our own **`Functor`**, **`Monad`** and **`Applicative`**.
 
-Let's make some assumptions first:
+Let's with a Functor and make some assumptions first:
 
 1. We have three functions:
  - **`A => B`**
