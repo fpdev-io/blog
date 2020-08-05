@@ -1,6 +1,6 @@
 ---
 layout: post
-date:   2020-08-05 07:00:00 +0100
+date:   2020-08-05 05:00:00 +0100
 title:  "Functors explained"
 categories: functional programming, scala
 author: fp_dev
