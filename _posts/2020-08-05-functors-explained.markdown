@@ -58,12 +58,28 @@ case class Box[T](value: T)
 {% endhighlight %}
 We defined a `case class` that has only one property `value of type T`.
 
-Let's put a value into it.
+The **`[T]`** means that we can easily configure our `Box` to accept different types, e.g:
+{% highlight scala %}
+val strBox = Box[String]("string in the box")
+
+val intBox = Box[Int](100)
+// and so on...
+{% endhighlight %}
+Scala compiler is smart so usually for simple types we can do like this:
+
+{% highlight scala %}
+val strBox = Box("a string in the box")
+
+val intBox = Box(100)
+{% endhighlight %}
+The compiler is able to infer the proper type from the given parameter.
+
+Ok, let's put a value into it.
 {% highlight scala %}
 val boxedInt = Box(100)
 {% endhighlight %}
 
-Ok, now we have an instance of `Box` case class and we want to apply some computation to it. Let's say we want to square
+Now we have an instance of `Box` case class and we want to apply some computation to it. Let's say we want to square
 the value inside the `Box`
 We write a function that gets Int parameter and squares it. 
 {% highlight scala %}
