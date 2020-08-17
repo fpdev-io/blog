@@ -3,6 +3,7 @@ layout: post
 title:  "What is Functional Programming?!"
 date:   2020-08-01 13:01:16 +0100
 categories: functional programming
+comments: true
 author: fp_dev
 ---
 
