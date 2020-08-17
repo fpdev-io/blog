@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Functors explained | FP dev</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Functors explained" />
+<meta name="author" content="fp_dev" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="When you start writing your code in a more functional way you finally learn about Functors, Monads and Applicatives. At first it can be overwhelming but I’ll try to explain what’s all about and how to better understand these constructs." />
+<meta property="og:description" content="When you start writing your code in a more functional way you finally learn about Functors, Monads and Applicatives. At first it can be overwhelming but I’ll try to explain what’s all about and how to better understand these constructs." />
+<link rel="canonical" href="/2020-08-05/functors-explained" />
+<meta property="og:url" content="/2020-08-05/functors-explained" />
+<meta property="og:site_name" content="FP dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-05T04:00:00+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-08-05T04:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"/2020-08-05/functors-explained"},"author":{"@type":"Person","name":"fp_dev"},"url":"/2020-08-05/functors-explained","description":"When you start writing your code in a more functional way you finally learn about Functors, Monads and Applicatives. At first it can be overwhelming but I’ll try to explain what’s all about and how to better understand these constructs.","dateModified":"2020-08-05T04:00:00+00:00","headline":"Functors explained","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="FP dev" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-52900595-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-52900595-2');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <div class="header">
+        <img class="logo" src="../fp-logo-small.png">
+        <h2 class="site-name">FP dev</h2>
+</div>
+    </a>
+    <ul>
+      <li><a href="/about">About</a></li>
+      <li><a href="/">Posts</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        fp_dev
+    
+
+    
+      <br>
+      <span>on </span><time datetime="2020-08-05 04:00:00 +0000">August 05, 2020</time>
+    
+  </div>
+
+  <h1 class="post-title">Functors explained</h1>
+  <div class="post-line"></div>
+
+  <p>When you start writing your code in a more functional way you finally learn about <strong><code class="language-plaintext highlighter-rouge">Functors</code></strong>, <strong><code class="language-plaintext highlighter-rouge">Monads</code></strong> and
+<strong><code class="language-plaintext highlighter-rouge">Applicatives</code></strong>.
+At first it can be overwhelming but I’ll try to explain what’s all about and how to better understand these constructs.</p>
+
+<p>In this blogpost series we’ll define our own <strong><code class="language-plaintext highlighter-rouge">Functor</code></strong>, <strong><code class="language-plaintext highlighter-rouge">Monad</code></strong> and <strong><code class="language-plaintext highlighter-rouge">Applicative</code></strong>.</p>
+
+<p>Let’s start with a Functor and make some assumptions first:</p>
+
+<ol>
+  <li>We have three functions:
+    <ul>
+      <li><strong><code class="language-plaintext highlighter-rouge">A =&gt; B</code></strong></li>
+      <li><strong><code class="language-plaintext highlighter-rouge">A =&gt; F[B]</code></strong></li>
+      <li><strong><code class="language-plaintext highlighter-rouge">F[A =&gt; B]</code></strong></li>
+    </ul>
+  </li>
+  <li>We want to use a function of type <strong><code class="language-plaintext highlighter-rouge">F[A] =&gt; F[B]</code></strong>.</li>
+</ol>
+
+<p>It’s obvious that we cannot apply such a function. We need to make some transformations.</p>
+
+<p><strong><code class="language-plaintext highlighter-rouge">F[_]</code></strong> is a type constructor. If you don’t know what type constructors are please go to my
+<a href="https://fp-dev.io/type-constructors">blogpost</a>.</p>
+
+<p>Let’s define our first Functor.</p>
+<h1 id="what-is-functor">What is Functor?</h1>
+<p>Informally we can say that <strong><code class="language-plaintext highlighter-rouge">Functor</code></strong> is anything with a <strong><code class="language-plaintext highlighter-rouge">map</code></strong> method.<br>
+So types like <strong><code class="language-plaintext highlighter-rouge">List</code></strong>, <strong><code class="language-plaintext highlighter-rouge">Option</code></strong> or <strong><code class="language-plaintext highlighter-rouge">Either</code></strong> are functors.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="nc">Option</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+<span class="c1">// res0: Option[Int] = Some(2)</span>
+
+<span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+<span class="c1">// res1: List[Int] = List(2, 3, 4)</span></code></pre></figure>
+
+<p>Using simple transformations we could define Functor more formally as:</p>
+
+<h1 id="a--b--fa--fb"><strong><code class="language-plaintext highlighter-rouge">(A =&gt; B) =&gt; (F[A] =&gt; F[B])</code></strong></h1>
+<p>It’s a function that gets a parameter of type <strong><code class="language-plaintext highlighter-rouge">A =&gt; B</code></strong>(which itself is a function <img class="emoji" title=":wink:" alt=":wink:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f609.png" height="20" width="20">) and returns another function of type <strong><code class="language-plaintext highlighter-rouge">F[A] =&gt; F[B]</code></strong>.
+We can look at <strong><code class="language-plaintext highlighter-rouge">F[A]</code></strong> as a box that can hold a value of type <strong><code class="language-plaintext highlighter-rouge">A</code></strong>.</p>
+
+<p>For instance:
+<strong><code class="language-plaintext highlighter-rouge">Option[Int]</code></strong> is a box that can hold a value of type <strong><code class="language-plaintext highlighter-rouge">Int</code></strong>.</p>
+
+<p>In Scala it would be defined as:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">opt</span> <span class="k">=</span> <span class="nc">Option</span><span class="o">(</span><span class="mi">10</span><span class="o">)</span>
+<span class="c1">// opt: Option[Int] = Some(100) </span></code></pre></figure>
+
+<p>If it’s still hard to understand let’s define an Option-like container from scratch.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span></code></pre></figure>
+
+<p>We defined a <code class="language-plaintext highlighter-rouge">case class</code> that has only one property <code class="language-plaintext highlighter-rouge">value of type T</code>.</p>
+
+<p>The <strong><code class="language-plaintext highlighter-rouge">[T]</code></strong> means that we can easily configure our <code class="language-plaintext highlighter-rouge">Box</code> to accept different types, e.g:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">strBox</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">String</span><span class="o">](</span><span class="s">"string in the box"</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">intBox</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">Int</span><span class="o">](</span><span class="mi">100</span><span class="o">)</span>
+<span class="c1">// and so on...</span></code></pre></figure>
+
+<p>Scala compiler is smart so usually for simple types we can do like this:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">strBox</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">(</span><span class="s">"a string in the box"</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">intBox</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span></code></pre></figure>
+
+<p>The compiler is able to infer the proper type from the given parameter.</p>
+
+<p>Ok, let’s put a value into it.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">boxedInt</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span></code></pre></figure>
+
+<p>Now we have an instance of <code class="language-plaintext highlighter-rouge">Box</code> case class and we want to apply some computation to it. Let’s say we want to square
+the value inside the <code class="language-plaintext highlighter-rouge">Box</code>
+We write a function that gets Int parameter and squares it.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">square</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span></code></pre></figure>
+
+<p>But hmm, how can we apply our <strong><code class="language-plaintext highlighter-rouge">square</code></strong> function into <strong>Box[T]</strong> type if our function is of type <strong><code class="language-plaintext highlighter-rouge">Int =&gt; Int</code></strong> but we need
+a function <strong><code class="language-plaintext highlighter-rouge">F[Int] =&gt; F[Int]</code></strong>?</p>
+
+<p>We quickly come up with a solution: We need another transformation!
+So we write:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nc">Box</span><span class="o">(</span><span class="nf">f</span><span class="o">(</span><span class="n">a</span><span class="o">))</span></code></pre></figure>
+
+<p>We’ve just defined a function that will help us a lot.<br>
+Our <strong><code class="language-plaintext highlighter-rouge">map</code></strong> is a function that takes another function as a parameter and returns a function of type <strong><code class="language-plaintext highlighter-rouge">Box[A] =&gt; Box[B]</code></strong></p>
+
+<p>Let’s grab the code together:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">T</span><span class="o">](</span><span class="n">value</span><span class="k">:</span> <span class="kt">T</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="nf">quare</span><span class="o">(</span><span class="n">value</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+<span class="k">def</span> <span class="nf">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">]</span> <span class="k">=&gt;</span> <span class="nc">Box</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span> <span class="k">=</span> <span class="o">(</span><span class="n">a</span><span class="k">:</span> <span class="kt">Box</span><span class="o">[</span><span class="kt">A</span><span class="o">])</span> <span class="k">=&gt;</span> <span class="nc">Box</span><span class="o">(</span><span class="nf">f</span><span class="o">(</span><span class="nv">a</span><span class="o">.</span><span class="py">value</span><span class="o">))</span>
+
+<span class="k">val</span> <span class="nv">box</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">(</span><span class="mi">100</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">mappedSquare</span> <span class="k">=</span> <span class="nf">map</span><span class="o">(</span><span class="n">square</span><span class="o">)</span>
+<span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nf">mappedSquare</span><span class="o">(</span><span class="n">box</span><span class="o">)</span>
+<span class="c1">//result: Box[Int] = Box(10000)</span></code></pre></figure>
+
+<p>One more example. With strings this time.</p>
+
+<p>Let’s have a string <strong><code class="language-plaintext highlighter-rouge">"fp-dev.io"</code></strong> that we want to uppercase.</p>
+
+<p><strong>What we have:</strong><br>
+A raw function <strong><code class="language-plaintext highlighter-rouge">.toUpperCase()</code></strong>, so <strong><code class="language-plaintext highlighter-rouge">"fp-dev.io".toUpperCase</code></strong> would return <strong><code class="language-plaintext highlighter-rouge">FP-DEV.IO</code></strong></p>
+
+<p><strong>What we need:</strong><br>
+A function <strong><code class="language-plaintext highlighter-rouge">Box[String] =&gt; Box[String]</code></strong></p>
+
+<p>We already have a mapping function so let’s use it:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">box</span> <span class="k">=</span> <span class="nc">Box</span><span class="o">(</span><span class="s">"fp-dev.io"</span><span class="o">)</span>
+
+<span class="k">def</span> <span class="nf">toUpperCase</span><span class="o">(</span><span class="n">s</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span> <span class="k">=</span> <span class="nv">s</span><span class="o">.</span><span class="py">toUpperCase</span>
+
+<span class="k">val</span> <span class="nv">upperCasedString</span> <span class="k">=</span> <span class="nf">map</span><span class="o">(</span><span class="n">toUpperCase</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nf">upperCasedString</span><span class="o">(</span><span class="n">box</span><span class="o">)</span>
+
+<span class="c1">// To make the code shorter we could even write something like this:</span>
+<span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nf">map</span><span class="o">(</span><span class="n">toUpperCase</span><span class="o">)(</span><span class="n">string</span><span class="o">)</span>
+<span class="c1">// result: Box[String] = Box(FP-DEV.IO)</span></code></pre></figure>
+
+<p><img class="emoji" title=":tada:" alt=":tada:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png" height="20" width="20"> <img class="emoji" title=":tada:" alt=":tada:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png" height="20" width="20"> <img class="emoji" title=":tada:" alt=":tada:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png" height="20" width="20"> <strong>This way we created the mysterious Functor.</strong> <img class="emoji" title=":tada:" alt=":tada:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png" height="20" width="20"> <img class="emoji" title=":tada:" alt=":tada:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png" height="20" width="20"> <img class="emoji" title=":tada:" alt=":tada:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f389.png" height="20" width="20"></p>
+
+<p>I already mentioned that <strong><code class="language-plaintext highlighter-rouge">List</code></strong>, <strong><code class="language-plaintext highlighter-rouge">Option</code></strong> and <strong><code class="language-plaintext highlighter-rouge">Either</code></strong> are functors so that
+they have their own version of <strong><code class="language-plaintext highlighter-rouge">map</code></strong> implemented. It’s implemented inside these structures so the usage is a bit
+better.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">case</span> <span class="k">class</span> <span class="nc">Option</span> <span class="o">{</span>
+  <span class="k">def</span> <span class="nf">map</span><span class="o">[</span><span class="kt">A</span>, <span class="kt">B</span><span class="o">](</span><span class="n">f</span><span class="k">:</span> <span class="kt">A</span> <span class="o">=&gt;</span> <span class="n">B</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[</span><span class="kt">B</span><span class="o">]</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>The argument on which it operates <strong><code class="language-plaintext highlighter-rouge">Option[A]</code></strong> it takes from inside.<br>
+That’s why we use it like:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">opt</span> <span class="k">=</span> <span class="nc">Option</span><span class="o">(</span><span class="s">"string"</span><span class="o">)</span>
+
+<span class="nv">opt</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">s</span> <span class="k">=&gt;</span> <span class="nv">s</span><span class="o">.</span><span class="py">toUpperCase</span><span class="o">)</span>
+<span class="c1">// opt: Option[String] = Some(STRING)</span></code></pre></figure>
+
+<p>As you can see the usage is much pleasant.</p>
+
+<p>The same with Lists:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">val</span> <span class="nv">list</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
+
+<span class="nv">list</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">n</span> <span class="k">=&gt;</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span>
+<span class="c1">// list: List[Int] = List(2, 3, 4)</span></code></pre></figure>
+
+<h1 id="functor-laws">Functor Laws</h1>
+<p>Functor originally comes from <strong>Category Theory</strong> and it means a mapping between categories.<br>
+Like many things in mathematics functors have laws and libraries 
+as <a href="https://typelevel.org/cats">Cats</a> or <a href="https://scalaz.github.io/7">Scalaz</a> and their functors implementation depend on these laws heavily.<br>
+What are they?</p>
+<h2 id="identity"><strong>Identity</strong></h2>
+<p>Let <strong><code class="language-plaintext highlighter-rouge">F</code></strong> be our Functor with a <strong><code class="language-plaintext highlighter-rouge">map</code></strong> method. First of all we need to define an identity function that:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">identity</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span></code></pre></figure>
+
+<p>Then we can show that: <strong><code class="language-plaintext highlighter-rouge">F.map(identity) == F</code></strong>, right?</p>
+
+<p>Let’s check it in Scala:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">identity</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span>
+
+<span class="k">val</span> <span class="nv">list</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">result</span> <span class="k">=</span> <span class="nv">list</span><span class="o">.</span><span class="py">map</span><span class="o">(</span><span class="n">identity</span><span class="o">)</span>
+<span class="c1">// result: List[Int] = List(1, 2, 3)</span></code></pre></figure>
+
+<h2 id="associativity"><strong>Associativity</strong></h2>
+
+<p>Let <strong><code class="language-plaintext highlighter-rouge">F</code></strong> be our Functor with a <strong><code class="language-plaintext highlighter-rouge">map</code></strong> method.<br>
+We need to show that <strong><code class="language-plaintext highlighter-rouge">F.map(f).map(g) == F.map(f andThen g)</code></strong>
+As usually let’s write some code:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">def</span> <span class="nf">g</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span> <span class="k">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
+
+<span class="k">val</span> <span class="nv">leftResult</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">f</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">g</span><span class="o">)</span>
+<span class="c1">// leftResult: List[Int] = List(4, 5, 6)</span>
+
+<span class="k">val</span> <span class="nv">rightResult</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">).</span><span class="py">map</span><span class="o">(</span><span class="n">f</span> <span class="n">andThen</span> <span class="n">g</span><span class="o">)</span>
+<span class="c1">// rightResult: List[Int] = List(4, 5, 6)</span></code></pre></figure>
+
+<p>As you can see the Functor Laws are quite simple, but you need to remember about them when defining your own Functors.
+As I mentioned before many libraries rely on them.</p>
+
+<p>Ok that’s all for now. I hope I explained a bit about functors. In the next blogpost we’ll talk about <strong><code class="language-plaintext highlighter-rouge">Monads</code></strong>
+<img class="emoji" title=":smile:" alt=":smile:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f604.png" height="20" width="20"><img class="emoji" title=":heart:" alt=":heart:" src="https://github.githubassets.com/images/icons/emoji/unicode/2764.png" height="20" width="20"></p>
+
+
+</div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+  this.page.url = 'https://fp-dev.io/2020-08-05/functors-explained';  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = '/2020-08-05/functors-explained'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://fp-dev-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+
+
+
+
+<div class="pagination">
+  
+  
+    <a href="/2020-08-01/what-is-functional-programming" class="right arrow">→</a>
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+    </main>
+
+    <footer>
+  <span>
+    <b>fp-dev.io © <time datetime="2020-08-17 07:18:30 +0000">2020</time></b>
+  </span>
+</footer>
+
+  </body>
+</html>

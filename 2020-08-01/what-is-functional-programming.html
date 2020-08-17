@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>What is Functional Programming?! | FP dev</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="What is Functional Programming?!" />
+<meta name="author" content="fp_dev" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Functional Programming is getting more and more popular nowadays. Many developers want to learn Functional Programming but as it turns out it’s not that easy. It’s easy when we try to explain someone what Functional Programming really is. It gets harder when it comes to practice. There are lots of new words (monads, functors, applicatives, etc.). It’s completely new approach to programming software. Many developers struggle to understand it. Dozens of people say that functional programming is all about special syntax, lambda functions or special languages. It’s all true but these things above are only additions. Some even say that you can do FP only with Haskell or Erlang. Some time ago I was Java Developer. One day I decided that I’d like to be Scala developer. I didn’t have any previous experience with this language. When I started learning it, it quickly turned out that it’s not just a syntax to grab. It was the whole new world of programming with a very different approach to composing programs. It was Functional Programming. In this blogpost I’m gonna explain Functional Programming by using Scala. Why Scala? Because it’s a very good hammer for it. Scala allows writing OOP code as well as FP code. It helps when switching from OOP to FP languages. I’ll explain a bit what’s going on in the code and I’ll try to use very simple examples. Ok, having said that let’s go back to the point. What is Functional Programming? It all comes down to saying that: Functional Programming is a programming with functions and immutable data structures. A function relates every value of type X to exactly one value of type Y. In Scala we could write: def f: X =&gt; Y So, Functional Programming is a programming style by using functions: def func(): Unit = { println(&quot;hello World!&quot;) } This is a very simple function in Scala. It doesn’t do much. It just prints hello world to the console. As you can see we define functions in Scala by using def keyword. Every function in Scala must return a value. In this case our function returns Unit. Unit in Scala is eviqvalent to void in Java. Let’s have a couple of functions: def f(x: Int): Int = x + 1 def g(x: Int): Int = x + 2 def h(x: Int): Int = x + 10 val x = 5 val a = f(x) /* we calculate a value of the first function */ val b = g(a) /* and we pass it to the next function then */ val c = h(b) val d = h(g(f(x))) /* we compose functions together */ As you can see the code above looks just like simple equations in maths. That’s why we sometimes say that FP code is like algebra. Side Effects Suppose we have a function: def increment(x: Int): Int = { println(s&quot;x value: $x&quot;) x + 1 } Everything is fine with that function…but it prints x value to the console. This action we call a side effect. Pure Functions A pure function is a function where its output depends only on its input value. So that a pure function: cannot read from I/O cannot write to I/O cannot modify any field outside of its scope As pure functions don’t communicate with I/O devices, then println’s are forbidden. As we could also say that pure functions don’t have side effects. var x = 5 /* Not a pure function. It changes x which is outside of the function&#39;s body */ def changeX(): Unit = { x = 10 } Can we quickly recognise if function is not pure? Function’s signature gives us some information. If function doesn’t have input parameters or doesn’t return anything. def impureFunc(): Unit = { .... } We see that this function doesn’t depend on any input parameters and doesn’t return any value. We don’t even have to know exactly what it does inside. Probably it just reads or writes data to I/O devices. There are lots of benefits when using pure functions: They are easy to reason about They are composable They are testable Referential Transparency Referential Transparency is another technique for writing FP code. An expression is referentially transparent if it can be replaced by its value. Or, when we know what pure functions are: Rerefential Transparency provides a proof that our program works correctly by replacing pure functions with their values. It helps to debug and solve complext problems easily. Here I’m giving you some exercises about RT. Please try to guess which one is referentially transparent and wchich is not. The answers are at the end of the article. Exercise 1. Are these apps the same? /* app 1 */ val value = 13 List(value, value) /* app 2 */ List(13, 13) Exercise 2. Are these apps the same? /* app 1 */ val value = &lt;expr&gt; List(value, value) /* app 2 */ List(&lt;expr&gt;, &lt;expr&gt;) Exercise 3. Are these apps the same? /* app 1 */ val value = iter.next() List(value, value) /* app 2 */ List(iter.next(), iter.next()) Exercise 4. Are these apps the same? /* app 1 */ val value = println(&quot;hello&quot;) List(value, value) /* app 2 */ List(println(&quot;hello&quot;), println(&quot;hello&quot;)) How it differs from OOP? Summary In this short article I hope I explained Functional Programming a bit. I know it’s just the tip of the iceberg and FP is very extensive and exciting programming technique. In the next blogposts I’ll give you more practical information about FP bits and pieces like: Monads, Functors, Applicatives Immutable data Data validation Partial functions, partially applied functions and currying in Scala RT answers: yes, it depends*, no, no *it depends because if a given expression is constant then we have referential transparency otherwiese not" />
+<meta property="og:description" content="Functional Programming is getting more and more popular nowadays. Many developers want to learn Functional Programming but as it turns out it’s not that easy. It’s easy when we try to explain someone what Functional Programming really is. It gets harder when it comes to practice. There are lots of new words (monads, functors, applicatives, etc.). It’s completely new approach to programming software. Many developers struggle to understand it. Dozens of people say that functional programming is all about special syntax, lambda functions or special languages. It’s all true but these things above are only additions. Some even say that you can do FP only with Haskell or Erlang. Some time ago I was Java Developer. One day I decided that I’d like to be Scala developer. I didn’t have any previous experience with this language. When I started learning it, it quickly turned out that it’s not just a syntax to grab. It was the whole new world of programming with a very different approach to composing programs. It was Functional Programming. In this blogpost I’m gonna explain Functional Programming by using Scala. Why Scala? Because it’s a very good hammer for it. Scala allows writing OOP code as well as FP code. It helps when switching from OOP to FP languages. I’ll explain a bit what’s going on in the code and I’ll try to use very simple examples. Ok, having said that let’s go back to the point. What is Functional Programming? It all comes down to saying that: Functional Programming is a programming with functions and immutable data structures. A function relates every value of type X to exactly one value of type Y. In Scala we could write: def f: X =&gt; Y So, Functional Programming is a programming style by using functions: def func(): Unit = { println(&quot;hello World!&quot;) } This is a very simple function in Scala. It doesn’t do much. It just prints hello world to the console. As you can see we define functions in Scala by using def keyword. Every function in Scala must return a value. In this case our function returns Unit. Unit in Scala is eviqvalent to void in Java. Let’s have a couple of functions: def f(x: Int): Int = x + 1 def g(x: Int): Int = x + 2 def h(x: Int): Int = x + 10 val x = 5 val a = f(x) /* we calculate a value of the first function */ val b = g(a) /* and we pass it to the next function then */ val c = h(b) val d = h(g(f(x))) /* we compose functions together */ As you can see the code above looks just like simple equations in maths. That’s why we sometimes say that FP code is like algebra. Side Effects Suppose we have a function: def increment(x: Int): Int = { println(s&quot;x value: $x&quot;) x + 1 } Everything is fine with that function…but it prints x value to the console. This action we call a side effect. Pure Functions A pure function is a function where its output depends only on its input value. So that a pure function: cannot read from I/O cannot write to I/O cannot modify any field outside of its scope As pure functions don’t communicate with I/O devices, then println’s are forbidden. As we could also say that pure functions don’t have side effects. var x = 5 /* Not a pure function. It changes x which is outside of the function&#39;s body */ def changeX(): Unit = { x = 10 } Can we quickly recognise if function is not pure? Function’s signature gives us some information. If function doesn’t have input parameters or doesn’t return anything. def impureFunc(): Unit = { .... } We see that this function doesn’t depend on any input parameters and doesn’t return any value. We don’t even have to know exactly what it does inside. Probably it just reads or writes data to I/O devices. There are lots of benefits when using pure functions: They are easy to reason about They are composable They are testable Referential Transparency Referential Transparency is another technique for writing FP code. An expression is referentially transparent if it can be replaced by its value. Or, when we know what pure functions are: Rerefential Transparency provides a proof that our program works correctly by replacing pure functions with their values. It helps to debug and solve complext problems easily. Here I’m giving you some exercises about RT. Please try to guess which one is referentially transparent and wchich is not. The answers are at the end of the article. Exercise 1. Are these apps the same? /* app 1 */ val value = 13 List(value, value) /* app 2 */ List(13, 13) Exercise 2. Are these apps the same? /* app 1 */ val value = &lt;expr&gt; List(value, value) /* app 2 */ List(&lt;expr&gt;, &lt;expr&gt;) Exercise 3. Are these apps the same? /* app 1 */ val value = iter.next() List(value, value) /* app 2 */ List(iter.next(), iter.next()) Exercise 4. Are these apps the same? /* app 1 */ val value = println(&quot;hello&quot;) List(value, value) /* app 2 */ List(println(&quot;hello&quot;), println(&quot;hello&quot;)) How it differs from OOP? Summary In this short article I hope I explained Functional Programming a bit. I know it’s just the tip of the iceberg and FP is very extensive and exciting programming technique. In the next blogposts I’ll give you more practical information about FP bits and pieces like: Monads, Functors, Applicatives Immutable data Data validation Partial functions, partially applied functions and currying in Scala RT answers: yes, it depends*, no, no *it depends because if a given expression is constant then we have referential transparency otherwiese not" />
+<link rel="canonical" href="/2020-08-01/what-is-functional-programming" />
+<meta property="og:url" content="/2020-08-01/what-is-functional-programming" />
+<meta property="og:site_name" content="FP dev" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-01T12:01:16+00:00" />
+<script type="application/ld+json">
+{"datePublished":"2020-08-01T12:01:16+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"/2020-08-01/what-is-functional-programming"},"author":{"@type":"Person","name":"fp_dev"},"url":"/2020-08-01/what-is-functional-programming","description":"Functional Programming is getting more and more popular nowadays. Many developers want to learn Functional Programming but as it turns out it’s not that easy. It’s easy when we try to explain someone what Functional Programming really is. It gets harder when it comes to practice. There are lots of new words (monads, functors, applicatives, etc.). It’s completely new approach to programming software. Many developers struggle to understand it. Dozens of people say that functional programming is all about special syntax, lambda functions or special languages. It’s all true but these things above are only additions. Some even say that you can do FP only with Haskell or Erlang. Some time ago I was Java Developer. One day I decided that I’d like to be Scala developer. I didn’t have any previous experience with this language. When I started learning it, it quickly turned out that it’s not just a syntax to grab. It was the whole new world of programming with a very different approach to composing programs. It was Functional Programming. In this blogpost I’m gonna explain Functional Programming by using Scala. Why Scala? Because it’s a very good hammer for it. Scala allows writing OOP code as well as FP code. It helps when switching from OOP to FP languages. I’ll explain a bit what’s going on in the code and I’ll try to use very simple examples. Ok, having said that let’s go back to the point. What is Functional Programming? It all comes down to saying that: Functional Programming is a programming with functions and immutable data structures. A function relates every value of type X to exactly one value of type Y. In Scala we could write: def f: X =&gt; Y So, Functional Programming is a programming style by using functions: def func(): Unit = { println(&quot;hello World!&quot;) } This is a very simple function in Scala. It doesn’t do much. It just prints hello world to the console. As you can see we define functions in Scala by using def keyword. Every function in Scala must return a value. In this case our function returns Unit. Unit in Scala is eviqvalent to void in Java. Let’s have a couple of functions: def f(x: Int): Int = x + 1 def g(x: Int): Int = x + 2 def h(x: Int): Int = x + 10 val x = 5 val a = f(x) /* we calculate a value of the first function */ val b = g(a) /* and we pass it to the next function then */ val c = h(b) val d = h(g(f(x))) /* we compose functions together */ As you can see the code above looks just like simple equations in maths. That’s why we sometimes say that FP code is like algebra. Side Effects Suppose we have a function: def increment(x: Int): Int = { println(s&quot;x value: $x&quot;) x + 1 } Everything is fine with that function…but it prints x value to the console. This action we call a side effect. Pure Functions A pure function is a function where its output depends only on its input value. So that a pure function: cannot read from I/O cannot write to I/O cannot modify any field outside of its scope As pure functions don’t communicate with I/O devices, then println’s are forbidden. As we could also say that pure functions don’t have side effects. var x = 5 /* Not a pure function. It changes x which is outside of the function&#39;s body */ def changeX(): Unit = { x = 10 } Can we quickly recognise if function is not pure? Function’s signature gives us some information. If function doesn’t have input parameters or doesn’t return anything. def impureFunc(): Unit = { .... } We see that this function doesn’t depend on any input parameters and doesn’t return any value. We don’t even have to know exactly what it does inside. Probably it just reads or writes data to I/O devices. There are lots of benefits when using pure functions: They are easy to reason about They are composable They are testable Referential Transparency Referential Transparency is another technique for writing FP code. An expression is referentially transparent if it can be replaced by its value. Or, when we know what pure functions are: Rerefential Transparency provides a proof that our program works correctly by replacing pure functions with their values. It helps to debug and solve complext problems easily. Here I’m giving you some exercises about RT. Please try to guess which one is referentially transparent and wchich is not. The answers are at the end of the article. Exercise 1. Are these apps the same? /* app 1 */ val value = 13 List(value, value) /* app 2 */ List(13, 13) Exercise 2. Are these apps the same? /* app 1 */ val value = &lt;expr&gt; List(value, value) /* app 2 */ List(&lt;expr&gt;, &lt;expr&gt;) Exercise 3. Are these apps the same? /* app 1 */ val value = iter.next() List(value, value) /* app 2 */ List(iter.next(), iter.next()) Exercise 4. Are these apps the same? /* app 1 */ val value = println(&quot;hello&quot;) List(value, value) /* app 2 */ List(println(&quot;hello&quot;), println(&quot;hello&quot;)) How it differs from OOP? Summary In this short article I hope I explained Functional Programming a bit. I know it’s just the tip of the iceberg and FP is very extensive and exciting programming technique. In the next blogposts I’ll give you more practical information about FP bits and pieces like: Monads, Functors, Applicatives Immutable data Data validation Partial functions, partially applied functions and currying in Scala RT answers: yes, it depends*, no, no *it depends because if a given expression is constant then we have referential transparency otherwiese not","dateModified":"2020-08-01T12:01:16+00:00","headline":"What is Functional Programming?!","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="FP dev" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-52900595-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-52900595-2');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <div class="header">
+        <img class="logo" src="../fp-logo-small.png">
+        <h2 class="site-name">FP dev</h2></div>
+    </a>
+    <ul>
+      <li><a href="/about">About</a></li>
+      <li><a href="/">Posts</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    <span>Written by</span>
+    
+        fp_dev
+    
+
+    
+      <br>
+      <span>on&nbsp;</span><time datetime="2020-08-01 12:01:16 +0000">August 01, 2020</time>
+    
+  </div>
+
+  <h1 class="post-title">What is Functional Programming?!</h1>
+  <div class="post-line"></div>
+
+  <p>Functional Programming is getting more and more popular nowadays.</p>
+
+<p>Many developers want to learn Functional Programming but as it turns out it’s not that easy.
+It’s easy when we try to explain someone what Functional Programming really is.<br />
+It gets harder when it comes to practice. There are lots of new words (monads, functors, applicatives, etc.). It’s
+completely new approach to programming software. Many developers struggle to understand it.</p>
+
+<p>Dozens of people say that functional programming is all about special syntax, lambda functions or special languages.
+It’s all true but these things above are only additions. Some even say that you can do FP only with Haskell or Erlang. 
+Some time ago I was Java Developer. One day I decided that I’d like to be Scala developer. I didn’t have any previous experience with this language.</p>
+
+<p>When I started learning it, it quickly turned out that it’s not just a syntax to grab. It was the whole new world of programming with a very different approach to composing programs. It was Functional Programming.</p>
+
+<p>In this blogpost I’m gonna explain Functional Programming by using <strong>Scala</strong>. Why Scala? Because it’s a very good hammer
+for it. Scala allows writing OOP code as well as FP code. It helps when switching from OOP to FP languages. I’ll explain a bit what’s going on in the
+code and I’ll try to use very simple examples.</p>
+
+<p>Ok, having said that let’s go back to the point.</p>
+
+<h1 id="what-is-functional-programming">What is Functional Programming?</h1>
+<p>It all comes down to saying that:</p>
+<h1 id="functional-programming-is-a-programming-with-functions-and-immutable-data-structures"><code class="language-plaintext highlighter-rouge">Functional Programming is a programming with functions and immutable data structures.</code></h1>
+<p>A function relates every value of type <strong>X</strong> to exactly one value of type <strong>Y</strong>.</p>
+
+<p>In Scala we could write:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">f</span><span class="k">:</span> <span class="kt">X</span> <span class="o">=&gt;</span> <span class="n">Y</span></code></pre></figure>
+
+<p>So, Functional Programming is a programming style by using functions:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">func</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+    <span class="nf">println</span><span class="o">(</span><span class="s">"hello World!"</span><span class="o">)</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>This is a very simple function in Scala. It doesn’t do much. It just prints <code class="language-plaintext highlighter-rouge">hello world</code> to the console.</p>
+
+<p>As you can see we define functions in Scala by using <strong>def</strong> keyword. Every function in Scala must return a value. In
+this case our function returns <strong>Unit</strong>.</p>
+
+<p><strong>Unit</strong> in Scala is eviqvalent to <strong>void</strong> in Java.</p>
+
+<p>Let’s have a couple of functions:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">g</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
+
+<span class="k">def</span> <span class="nf">h</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">10</span>
+
+<span class="k">val</span> <span class="nv">x</span> <span class="k">=</span> <span class="mi">5</span>
+
+<span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">)</span> <span class="cm">/* we calculate a value of the first function */</span>
+<span class="k">val</span> <span class="nv">b</span> <span class="k">=</span> <span class="nf">g</span><span class="o">(</span><span class="n">a</span><span class="o">)</span> <span class="cm">/* and we pass it to the next function then */</span>
+<span class="k">val</span> <span class="nv">c</span> <span class="k">=</span> <span class="nf">h</span><span class="o">(</span><span class="n">b</span><span class="o">)</span>
+
+<span class="k">val</span> <span class="nv">d</span> <span class="k">=</span> <span class="nf">h</span><span class="o">(</span><span class="nf">g</span><span class="o">(</span><span class="nf">f</span><span class="o">(</span><span class="n">x</span><span class="o">)))</span> <span class="cm">/* we compose functions together */</span></code></pre></figure>
+
+<p>As you can see the code above looks just like simple equations in maths.</p>
+
+<p>That’s why we sometimes say that FP code is like algebra.</p>
+
+<h1 id="side-effects">Side Effects</h1>
+<p>Suppose we have a function:</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">increment</span><span class="o">(</span><span class="n">x</span><span class="k">:</span> <span class="kt">Int</span><span class="o">)</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="nf">println</span><span class="o">(</span><span class="n">s</span><span class="s">"x value: $x"</span><span class="o">)</span>
+  <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>Everything is fine with that function…but it prints x value to the console.<br />
+This action we call a <code class="language-plaintext highlighter-rouge">side effect.</code></p>
+
+<h1 id="pure-functions">Pure Functions</h1>
+
+<h3 id="a-pure-function-is-a-function-where-its-output-depends-only-on-its-input-value"><code class="language-plaintext highlighter-rouge">A pure function is a function where its output depends only on its input value.</code></h3>
+
+<p>So that a pure function:</p>
+<ul>
+  <li>cannot read from I/O</li>
+  <li>cannot write to I/O</li>
+  <li>cannot modify any field outside of its scope</li>
+</ul>
+
+<p>As pure functions don’t communicate with I/O devices, then println’s are forbidden.</p>
+
+<p>As we could also say that pure functions don’t have <code class="language-plaintext highlighter-rouge">side effects</code>.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">var</span> <span class="n">x</span> <span class="k">=</span> <span class="mi">5</span>
+
+<span class="cm">/* Not a pure function. It changes x which is outside of the function's body */</span>
+<span class="k">def</span> <span class="nf">changeX</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="n">x</span> <span class="k">=</span> <span class="mi">10</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>Can we quickly recognise if function is not pure?<br />
+Function’s signature gives us some information. If function doesn’t have input parameters or doesn’t return anything.</p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala"><span class="k">def</span> <span class="nf">impureFunc</span><span class="o">()</span><span class="k">:</span> <span class="kt">Unit</span> <span class="o">=</span> <span class="o">{</span>
+  <span class="o">....</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>We see that this function doesn’t depend on any input parameters and doesn’t return any value.
+We don’t even have to know exactly what it does inside. Probably it just reads or writes data to I/O devices.</p>
+
+<p><strong>There are lots of benefits when using pure functions:</strong></p>
+<ol>
+  <li>They are easy to reason about</li>
+  <li>They are composable</li>
+  <li>They are testable</li>
+</ol>
+
+<h1 id="referential-transparency">Referential Transparency</h1>
+<p>Referential Transparency is another technique for writing FP code.</p>
+<h3 id="an-expression-is-referentially-transparent-if-it-can-be-replaced-by-its-value"><code class="language-plaintext highlighter-rouge">An expression is referentially transparent if it can be replaced by its value.</code></h3>
+
+<p>Or, when we know what pure functions are:</p>
+
+<h2 id="rerefential-transparency-provides-a-proof-that-our-program-works-correctly-by-replacing-pure-functions-with-their-values"><code class="language-plaintext highlighter-rouge">Rerefential Transparency provides a proof that our program works correctly by replacing pure functions with their values.</code></h2>
+
+<p>It helps to debug and solve complext problems easily.</p>
+
+<p>Here I’m giving you some exercises about RT. Please try to guess which one is referentially transparent and wchich is
+not. The answers are at the end of the article.</p>
+
+<p><strong>Exercise 1. Are these apps the same?</strong></p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala">  <span class="cm">/* app 1 */</span>
+  <span class="k">val</span> <span class="nv">value</span> <span class="k">=</span> <span class="mi">13</span>
+  <span class="nc">List</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">value</span><span class="o">)</span>
+
+  <span class="cm">/* app 2 */</span>
+  <span class="nc">List</span><span class="o">(</span><span class="mi">13</span><span class="o">,</span> <span class="mi">13</span><span class="o">)</span></code></pre></figure>
+
+<p><strong>Exercise 2. Are these apps the same?</strong></p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala">  <span class="cm">/* app 1 */</span>
+  <span class="k">val</span> <span class="nv">value</span> <span class="k">=</span> <span class="o">&lt;</span><span class="n">expr</span><span class="o">&gt;</span>
+  <span class="nc">List</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">value</span><span class="o">)</span>
+
+  <span class="cm">/* app 2 */</span>
+  <span class="nc">List</span><span class="o">(&lt;</span><span class="n">expr</span><span class="o">&gt;,</span> <span class="o">&lt;</span><span class="n">expr</span><span class="o">&gt;)</span></code></pre></figure>
+
+<p><strong>Exercise 3. Are these apps the same?</strong></p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala">  <span class="cm">/* app 1 */</span>
+  <span class="k">val</span> <span class="nv">value</span> <span class="k">=</span> <span class="nv">iter</span><span class="o">.</span><span class="py">next</span><span class="o">()</span>
+  <span class="nc">List</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">value</span><span class="o">)</span>
+
+  <span class="cm">/* app 2 */</span>
+  <span class="nc">List</span><span class="o">(</span><span class="nv">iter</span><span class="o">.</span><span class="py">next</span><span class="o">(),</span> <span class="nv">iter</span><span class="o">.</span><span class="py">next</span><span class="o">())</span></code></pre></figure>
+
+<p><strong>Exercise 4. Are these apps the same?</strong></p>
+
+<figure class="highlight"><pre><code class="language-scala" data-lang="scala">  <span class="cm">/* app 1 */</span>
+  <span class="k">val</span> <span class="nv">value</span> <span class="k">=</span> <span class="nf">println</span><span class="o">(</span><span class="s">"hello"</span><span class="o">)</span>
+  <span class="nc">List</span><span class="o">(</span><span class="n">value</span><span class="o">,</span> <span class="n">value</span><span class="o">)</span>
+
+  <span class="cm">/* app 2 */</span>
+  <span class="nc">List</span><span class="o">(</span><span class="nf">println</span><span class="o">(</span><span class="s">"hello"</span><span class="o">),</span> <span class="nf">println</span><span class="o">(</span><span class="s">"hello"</span><span class="o">))</span></code></pre></figure>
+
+<h1 id="how-it-differs-from-oop">How it differs from OOP?</h1>
+
+<h1 id="summary">Summary</h1>
+<p>In this short article I hope I explained Functional Programming a bit. I know it’s just the tip of the iceberg and FP is
+very extensive and exciting programming technique. In the next blogposts I’ll give you more practical information about
+FP bits and pieces like:</p>
+<ol>
+  <li>Monads, Functors, Applicatives</li>
+  <li>Immutable data</li>
+  <li>Data validation</li>
+  <li>Partial functions, partially applied functions and currying in Scala</li>
+</ol>
+
+<p><sup><sub>RT answers: yes, it depends*, no, no</sub></sup><br />
+<sup><sub>*it depends because if a given expression is constant then we have referential transparency otherwiese not</sub></sup></p>
+
+
+</div>
+
+
+  
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+  this.page.url = 'https://fp-dev.io/2020-08-01/what-is-functional-programming';  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = '/2020-08-01/what-is-functional-programming'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://fp-dev-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+
+
+<div class="pagination">
+  
+    <a href="/2020-08-05/functors-explained" class="left arrow">&#8592;</a>
+  
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+    </main>
+
+    <footer>
+  <span>
+    <b>fp-dev.io &copy; <time datetime="2020-08-17 07:18:30 +0000">2020</time></b>
+  </span>
+</footer>
+
+  </body>
+</html>
